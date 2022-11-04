@@ -23,8 +23,8 @@ export default class Search extends Component {
       artist: search,
     });
     const fetch = await searchAlbumsAPI(search);
-    const isFinded = fetch.length < 1;
     console.log(fetch);
+    const isFinded = fetch.length < 1;
     this.setState({
       albuns: fetch,
       search: '',
