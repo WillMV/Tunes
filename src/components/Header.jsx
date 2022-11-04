@@ -15,7 +15,6 @@ export default class Header extends Component {
 
   catchName = async () => {
     const user = await getUser();
-    console.log(user);
     this.setState({
       userName: user.name,
       isLoaded: true,

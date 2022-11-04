@@ -1,21 +1,35 @@
-/* eslint-disable react/jsx-closing-tag-location */
-/* eslint-disable react/jsx-indent */
 import React, { Component } from 'react';
+import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
-// import searchAlbumsAPI from '../services/searchAlbumsAPI';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
 
 export default class Search extends Component {
   state = {
     search: '',
+    artist: '',
+    isSearch: false,
     searching: false,
     disable: true,
+    albuns: [],
+    isFind: false,
   };
 
   searchAlbum = async () => {
+    const { search } = this.state;
     this.setState({
-      search: '',
       searching: true,
+      isSearch: true,
+      artist: search,
+    });
+    const fetch = await searchAlbumsAPI(search);
+    const isFinded = fetch.length < 1;
+    console.log(fetch);
+    this.setState({
+      albuns: fetch,
+      search: '',
+      searching: false,
+      isFind: isFinded,
     });
   };
 
@@ -27,6 +41,12 @@ export default class Search extends Component {
     });
   };
 
+  // stateTrader = (name, value) => {
+  //   this.setState({
+  //     [name]: value,
+  //   });
+  // };
+
   onChangeValue = ({ target: { name, value } }) => {
     this.setState({
       [name]: value,
@@ -34,7 +54,7 @@ export default class Search extends Component {
   };
 
   render() {
-    const { disable, searching } = this.state;
+    const { disable, searching, isSearch, isFind, artist, albuns } = this.state;
 
     return (
       <div data-testid="page-search">
@@ -42,22 +62,35 @@ export default class Search extends Component {
         {
           searching
             ? <Loading />
-            : <form action="">
-              <input
-                type="text"
-                name="search"
-                onChange={ this.onChangeValue }
-                data-testid="search-artist-input"
-              />
-              <button
-                type="submit"
-                disabled={ disable }
-                onClick={ this.searchAlbum }
-                data-testid="search-artist-button"
-              >
-                Pesquisar
-              </button>
-            </form>
+            : (
+              <form action="">
+                <input
+                  type="text"
+                  name="search"
+                  onChange={ this.onChangeValue }
+                  data-testid="search-artist-input"
+                />
+                <button
+                  type="submit"
+                  disabled={ disable }
+                  onClick={ this.searchAlbum }
+                  data-testid="search-artist-button"
+                >
+                  Pesquisar
+                </button>
+              </form>)
+        }
+        {
+          isFind ? (
+            <div>
+              Nenhum álbum foi encontrado
+            </div>
+          ) : (isSearch && (
+            <p>{`Resultado de álbuns de: ${artist}`}</p>
+          ))
+        }
+        {
+          albuns.map((album) => <AlbumCard key={ album.collectionID } album={ album } />)
         }
       </div>
     );
