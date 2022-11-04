@@ -39,7 +39,7 @@ export default class Album extends Component {
         <img src={ albumImg } alt={ `Capa do album ${albumName}` } />
         {
           album.map((music, index) => index > 0
-          && <MusicCard music={ music } />)
+          && <MusicCard key={ music.trackId } music={ music } />)
         }
       </div>
     );

@@ -1,27 +1,32 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Loading from './Loading';
-import { addSong } from '../services/favoriteSongsAPI';
+import { getFavoriteSongs, addSong } from '../services/favoriteSongsAPI';
 
 export default class MusicCard extends Component {
   state = {
     isLoadin: false,
+    isFav: false,
   };
 
-  saveFavTrack = async () => {
+  async componentDidMount() {
+    const { music: { trackId } } = this.props;
+    this.setState({ isLoadin: true });
+    const fetch = await getFavoriteSongs();
+    const hadFav = fetch.find((musicFav) => musicFav.trackId === trackId);
+    this.setState({ isLoadin: false, isFav: hadFav });
+  }
+
+  saveFavTrack = async ({ target: { checked } }) => {
     const { music } = this.props;
-    this.setState({
-      isLoadin: true,
-    });
+    this.setState({ isLoadin: true, isFav: checked });
     await addSong(music);
-    this.setState({
-      isLoadin: false,
-    });
+    this.setState({ isLoadin: false });
   };
 
   render() {
     const { music: { trackName, previewUrl, trackId } } = this.props;
-    const { isLoadin } = this.state;
+    const { isLoadin, isFav } = this.state;
     return (
       <div>
         <h2>{ trackName }</h2>
@@ -35,6 +40,7 @@ export default class MusicCard extends Component {
           <input
             data-testid={ `checkbox-music-${trackId}` }
             type="checkbox"
+            checked={ isFav }
             onClick={ this.saveFavTrack }
             id={ trackId }
           />
@@ -50,6 +56,6 @@ MusicCard.propTypes = {
   music: PropTypes.shape({
     previewUrl: PropTypes.string,
     trackName: PropTypes.string,
-    trackId: PropTypes.string,
+    trackId: PropTypes.number,
   }).isRequired,
 };
