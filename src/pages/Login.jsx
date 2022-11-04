@@ -32,7 +32,6 @@ export default class Login extends Component {
   };
 
   onChangeValue = ({ target: { name, value } }) => {
-    console.log('mudou');
     this.setState({
       [name]: value,
     }, this.buttonEnable);
