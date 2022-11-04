@@ -1,10 +1,22 @@
+/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable react/jsx-indent */
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import Loading from '../components/Loading';
+// import searchAlbumsAPI from '../services/searchAlbumsAPI';
 
 export default class Search extends Component {
   state = {
     search: '',
+    searching: false,
     disable: true,
+  };
+
+  searchAlbum = async () => {
+    this.setState({
+      search: '',
+      searching: true,
+    });
   };
 
   buttonEnable = () => {
@@ -22,22 +34,31 @@ export default class Search extends Component {
   };
 
   render() {
-    const { disable } = this.state;
+    const { disable, searching } = this.state;
 
     return (
       <div data-testid="page-search">
         <Header />
-        <form action="">
-          <input
-            type="text"
-            name="search"
-            onChange={ this.onChangeValue }
-            data-testid="search-artist-input"
-          />
-          <button type="submit" disabled={ disable } data-testid="search-artist-button">
-            Pesquisar
-          </button>
-        </form>
+        {
+          searching
+            ? <Loading />
+            : <form action="">
+              <input
+                type="text"
+                name="search"
+                onChange={ this.onChangeValue }
+                data-testid="search-artist-input"
+              />
+              <button
+                type="submit"
+                disabled={ disable }
+                onClick={ this.searchAlbum }
+                data-testid="search-artist-button"
+              >
+                Pesquisar
+              </button>
+            </form>
+        }
       </div>
     );
   }
