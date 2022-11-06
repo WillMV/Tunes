@@ -23,8 +23,6 @@ export default class MusicCard extends Component {
     const { music } = this.props;
     const inFavList = favList
       .some((favItem) => favItem.trackId === music.trackId);
-    console.log(inFavList);
-    console.log(favList);
 
     if (inFavList) {
       await this.removeFavTrack(event);
