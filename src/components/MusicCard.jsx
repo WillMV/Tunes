@@ -29,7 +29,7 @@ export default class MusicCard extends Component {
     } else {
       await this.addFavTrack(event);
     }
-    const newFavs = await getFavoriteSongs;
+    const newFavs = await getFavoriteSongs();
     this.setState({ favList: newFavs });
   };
 
