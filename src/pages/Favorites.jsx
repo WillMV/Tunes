@@ -2,55 +2,53 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
-import { getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
 export default class Favorites extends Component {
   state = {
     isLoading: true,
-    favs: [],
+    songs: [],
   };
 
   async componentDidMount() {
-    const getFavs = await getFavoriteSongs();
-    this.setState({ favs: getFavs, isLoading: false });
+    const favsMusics = await getFavoriteSongs();
+    const musics = favsMusics.map((music) => ({ ...music, checked: true }));
+    this.setState({ songs: musics, isLoading: false });
   }
 
-  // shouldComponentUpdate(nextP, nextS) {
-  //   const { favs } = this.state;
-  //   console.log('Atual');
-  //   console.log(this.props, this.state);
-  //   console.log('Proximo');
-  //   console.log(nextP, nextS);
-  //   const isfirst = favs.length === nextS.favs.length;
-  //   console.log(isfirst);
-  //   return true;
-  // }
+  createList = async () => {
+    const favsMusics = await getFavoriteSongs();
+    const musics = favsMusics.map((music) => ({ ...music, checked: true }));
+    this.setState({ songs: musics });
+  };
 
-  async componentDidUpdate() {
-    const { favs } = this.state;
-    console.log('didup');
-    const getfavs = await getFavoriteSongs();
-    if (favs.length !== getfavs.length) {
-      console.log('updidi');
-      this.setState({ favs: getfavs });
-    }
-  }
+  getMusic = (name) => {
+    const { songs } = this.state;
+    return songs.find((music) => music.trackId === +name);
+  };
 
-  renderFavs = () => {
-    const { favs } = this.state;
-    return (
-      favs.map((music) => <MusicCard key={ music.trackId } music={ music } />)
-    );
+  removeSong = async ({ target: { name } }) => {
+    const music = this.getMusic(name);
+    this.setState({ isLoading: true });
+    await removeSong(music);
+    await this.createList();
+    this.setState({ isLoading: false });
   };
 
   render() {
-    const { isLoading, favs } = this.state;
+    const { isLoading, songs } = this.state;
     return (
       <div data-testid="page-favorites">
         <Header />
         {isLoading && <Loading />}
-        {favs.length > 0
-        && this.renderFavs()}
+        {songs.length > 0
+        && (
+          songs.map((music) => (<MusicCard
+            key={ music.trackId }
+            music={ music }
+            controlFav={ this.removeSong }
+          />))
+        )}
       </div>
     );
   }
