@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
@@ -23,7 +24,7 @@ export default class ProfileEdit extends Component {
       image: fetch.image,
       description: fetch.description,
       isLoading: false,
-    });
+    }, this.isValidVerificator());
   }
 
   onChangeInput = ({ target: { name, value } }) => {
@@ -46,6 +47,8 @@ export default class ProfileEdit extends Component {
 
   onSubmit = async (e) => {
     e.preventDefault();
+    const { history } = this.props;
+
     this.setState({ isLoading: true });
     const { name, email, image, description } = this.state;
     await updateUser({
@@ -54,7 +57,8 @@ export default class ProfileEdit extends Component {
       image,
       description,
     });
-    this.setState({ isLoading: false, redirect: true });
+    history.push('/profile/');
+    this.setState({ redirect: true });
   };
 
   render() {
@@ -115,3 +119,7 @@ export default class ProfileEdit extends Component {
     );
   }
 }
+
+ProfileEdit.propTypes = {
+  history: PropTypes.func.isRequired,
+};
