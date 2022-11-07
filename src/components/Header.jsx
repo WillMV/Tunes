@@ -27,7 +27,7 @@ export default class Header extends Component {
       <header data-testid="header-component">
         {
           isLoaded
-            ? <h1 data-testid="header-user-name">{`Olá ${userName}`}</h1>
+            ? <h1 data-testid="header-user-name">{userName}</h1>
             : <Loading />
         }
 

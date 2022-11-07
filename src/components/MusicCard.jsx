@@ -48,7 +48,7 @@ export default class MusicCard extends Component {
   };
 
   render() {
-    const { music: { trackName, previewUrl, trackId } } = this.props;
+    const { music: { trackName, previewUrl, trackId }, controlFavTrack } = this.props;
     const { isLoadin, isFav } = this.state;
     return (
       <div>
