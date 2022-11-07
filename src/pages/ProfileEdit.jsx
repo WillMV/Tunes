@@ -10,7 +10,7 @@ export default class ProfileEdit extends Component {
 
   // async componentDidMount() {
   //   const fetch = getUser();
-  //   this.setState({user});
+  //   this.setState({ user });
   // }
 
   render() {
@@ -18,15 +18,12 @@ export default class ProfileEdit extends Component {
     return (
       <div data-testid="page-profile-edit">
         <Header />
-        {/* {
-          isLoading
-            ? <Loading />
-            : (
-              <form action="">
-                <input type="text" />
-              </form>
-            )
-        } */}
+        {/* {isLoading && <Loading /> }
+
+        <form action="">
+          <input type="text" />
+        </form> */}
+
       </div>
     );
   }
