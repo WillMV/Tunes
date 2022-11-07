@@ -12,8 +12,6 @@ export default class Profile extends Component {
 
   async componentDidMount() {
     const fetch = await getUser();
-    console.log(fetch);
-    console.log(fetch.name.length);
     this.setState({ user: fetch, isLoading: false });
   }
 
@@ -22,20 +20,12 @@ export default class Profile extends Component {
     return (
       <div data-testid="page-profile">
         <Header />
-        {
-          isLoading
-            ? <Loading />
-            : (
-              <div>
-                <Link to="/profile/edit">Editar perfil</Link>
-                <img data-testid="profile-image" src={ image } alt="" />
-                <p>{`${name}`}</p>
-                <p>{email}</p>
-                <p>{description}</p>
-              </div>
-            )
-        }
-
+        {isLoading && <Loading />}
+        <Link to="/profile/edit">Editar perfil</Link>
+        <img data-testid="profile-image" src={ image } alt="" />
+        <p>{name}</p>
+        <p>{email}</p>
+        <p>{description}</p>
       </div>
     );
   }
