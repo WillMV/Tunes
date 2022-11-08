@@ -57,8 +57,8 @@ export default class ProfileEdit extends Component {
       image,
       description,
     });
-    history.push('/profile/');
-    this.setState({ redirect: true });
+    history.push('/profile');
+    // this.setState({ redirect: true });
   };
 
   render() {
@@ -111,7 +111,7 @@ export default class ProfileEdit extends Component {
             disabled={ isDisabled }
             onClick={ this.onSubmit }
           >
-            Salvar
+            Editar perfil
           </button>
           { redirect && <Redirect to="/profile" /> }
         </form>
