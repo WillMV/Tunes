@@ -75,14 +75,14 @@ export default class Search extends Component {
                   onClick={ this.searchAlbum }
                   data-testid="search-artist-button"
                 >
-                  Pesquisar
+                  Search
                 </button>
               </form>)
         }
         {
           isFind ? (
             <div>
-              Nenhum álbum foi encontrado
+              Nothing...
             </div>
           ) : (isSearch && (
             <p>{`Resultado de álbuns de: ${artist}`}</p>

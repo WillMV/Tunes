@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { createUser } from '../services/userAPI';
 import Loading from '../components/Loading';
+import { createUser, getUser } from '../services/userAPI';
 
 export default class Login extends Component {
   state = {
@@ -10,6 +10,16 @@ export default class Login extends Component {
     loading: false,
     redirect: false,
   };
+
+  componentDidMount() {
+    this.setState({ loading: true });
+    getUser().then((value) => {
+      this.setState({ loading: false });
+      if (Object.keys(value).length > 0) {
+        this.setState({ redirect: true });
+      }
+    });
+  }
 
   buttonEnable = () => {
     const { inputName } = this.state;
@@ -40,27 +50,33 @@ export default class Login extends Component {
   render() {
     const { inputName, disable, loading, redirect } = this.state;
     return (
-      <div data-testid="page-login">
-        <form action="">
+      <span data-testid="page-login">
+        <form className="card" action="">
           { loading && <Loading />}
-          <input
-            type="text"
-            name="inputName"
-            value={ inputName }
-            onChange={ this.onChangeValue }
-            data-testid="login-name-input"
-          />
+          <h1>Login</h1>
+          <label htmlFor={ inputName }>
+
+            <input
+              type="text"
+              name="inputName"
+              placeholder="Name"
+              value={ inputName }
+              onChange={ this.onChangeValue }
+              data-testid="login-name-input"
+            />
+          </label>
+          <br />
           <button
             type="submit"
             onClick={ this.creatingUser }
             disabled={ disable }
             data-testid="login-submit-button"
           >
-            Entrar
+            Confirm
           </button>
           { redirect && <Redirect to="/search" />}
         </form>
-      </div>
+      </span>
     );
   }
 }
