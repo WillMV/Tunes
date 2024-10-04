@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  padding: 0;
   height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -22,9 +23,14 @@ input {
 }
 
 .loading {
-  align-items: center;
+  position: absolute;
   display: flex;
+  align-items: center;
   justify-content: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  z-index: 1;
+  background-color: rgba(6, 131, 168, 0.336);
 }
 
 .card {
@@ -35,4 +41,63 @@ input {
   padding: 25px 25px 25px 25px;
   justify-content: center;
   transform: translate(-50%, -50%);
+}
+
+svg {
+  width: 150px;
+  height: 150px;
+  transform: translate(-50%, -50%);
+
+  animation: rotate 2s linear infinite;
+  z-index: 1;
+}
+
+svg circle {
+  fill: none;
+  transform: translate(5px, 5px);
+  stroke-width: 10;
+  stroke: url(#grad1);
+  stroke-linecap: round;
+  stroke-dashoffset: 440;
+  stroke-dasharray: 440;
+  animation: animate 4s linear infinite;
+}
+
+#stop1 {
+  stop-color: #dce366;
+  stop-opacity: 1;
+}
+
+#stop2 {
+  stop-color: #720D39;
+  stop-opacity: 1;
+}
+
+
+@keyframes animate {
+
+  0%,
+  100% {
+    stroke-dashoffset: 440;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  50.1% {
+    stroke-dashoffset: 880;
+  }
+
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+
 }

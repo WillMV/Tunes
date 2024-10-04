@@ -51,8 +51,8 @@ export default class Login extends Component {
     const { inputName, disable, loading, redirect } = this.state;
     return (
       <span data-testid="page-login">
+        { loading && <Loading />}
         <form className="card" action="">
-          { loading && <Loading />}
           <h1>Login</h1>
           <label htmlFor={ inputName }>
 
